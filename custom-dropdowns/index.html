@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sticky Dropdown</title>
+    <style>
+        /* Style for dropdown */
+        .dropdown-option {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 100px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Style for dropdown items */
+        .dropdown-option  a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Style for dropdown items on hover */
+        .dropdown-option  a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Style for filter button */
+        .filter-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div style="position: relative;">
+    <!-- Filter button -->
+    <button class="filter-btn" data-droptrigger-id="1">Filter</button>
+    <!-- Filter button -->
+    <button class="filter-btn" data-droptrigger-id="2">Filter 2</button>
+    
+</div>
+  
+  <!-- Dropdown content -->
+  <div data-dropdown-id="1" class="dropdown-option" id="dropdown-custom-1">
+    <a href="#">Option 1</a>
+    <a href="#">Option 2</a>
+    <a href="#">Option 3</a>
+  </div>
+  <!-- Dropdown content -->
+  <div data-dropdown-id="2" class="dropdown-option" id="dropdown-custom-2" style="position: absolute; right: 250px;">
+    <a href="#">Option 4</a>
+    <a href="#">Option 5</a>
+    <a href="#">Option 6</a>
+  </div>
+
+<script>
+    const dropdownOptions = document.querySelectorAll('.dropdown-option');
+
+    dropdownOptions.forEach(option => {
+        const droptriggerId = option.getAttribute('data-dropdown-id');
+        const dropTrigger = document.querySelector(`[data-droptrigger-id="${droptriggerId}"]`);
+
+        dropTrigger.addEventListener('click', () => {
+            const isVisible = option.style.display === 'block';
+            dropdownOptions.forEach(option => option.style.display = 'none');
+            if (!isVisible) {
+                const rect = dropTrigger.getBoundingClientRect();
+                option.style.top = `${rect.bottom}px`;
+                option.style.left = `${rect.left}px`;
+                option.style.display = 'block';
+            }
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!event.target.matches('.filter-btn')) {
+            dropdownOptions.forEach(option => option.style.display = 'none');
+        }
+    });
+</script>
+
+</body>
+</html>
